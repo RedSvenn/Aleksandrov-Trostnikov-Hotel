@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище HotelModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bronirovanie">
+          <Key>
+            <PropertyRef Name="Id-Бронь" />
+          </Key>
+          <Property Name="Id-Бронь" Type="int" Nullable="false" />
+          <Property Name="Id-Client" Type="int" />
+          <Property Name="Id-Номера" Type="int" />
+          <Property Name="Дата заезда" Type="date" />
+          <Property Name="Дата выезда" Type="date" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id-Client" />
+          </Key>
+          <Property Name="Id-Client" Type="int" Nullable="false" />
+          <Property Name="Фамилия" Type="varchar" MaxLength="50" />
+          <Property Name="Имя" Type="varchar" MaxLength="50" />
+          <Property Name="Отчество" Type="varchar" MaxLength="50" />
+          <Property Name="Серия номер паспорта" Type="int" />
+          <Property Name="Номер телефона" Type="int" />
+        </EntityType>
+        <EntityType Name="Numbers">
+          <Key>
+            <PropertyRef Name="Id-Номера" />
+          </Key>
+          <Property Name="Id-Номера" Type="int" Nullable="false" />
+          <Property Name="Этаж" Type="int" />
+          <Property Name="Стоимость проживания" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Бронирование_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="Bronirovanie" Type="Self.Bronirovanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id-Client" />
+            </Principal>
+            <Dependent Role="Bronirovanie">
+              <PropertyRef Name="Id-Client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Бронирование_Номера">
+          <End Role="Numbers" Type="Self.Numbers" Multiplicity="0..1" />
+          <End Role="Bronirovanie" Type="Self.Bronirovanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Numbers">
+              <PropertyRef Name="Id-Номера" />
+            </Principal>
+            <Dependent Role="Bronirovanie">
+              <PropertyRef Name="Id-Номера" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище HotelModelContainer">
+          <EntitySet Name="Bronirovanie" EntityType="Self.Bronirovanie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Numbers" EntityType="Self.Numbers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Бронирование_Client" Association="Self.FK_Бронирование_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Bronirovanie" EntitySet="Bronirovanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Бронирование_Номера" Association="Self.FK_Бронирование_Номера">
+            <End Role="Numbers" EntitySet="Numbers" />
+            <End Role="Bronirovanie" EntitySet="Bronirovanie" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HotelModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Bronirovanie">
+          <Key>
+            <PropertyRef Name="Id_Бронь" />
+          </Key>
+          <Property Name="Id_Бронь" Type="Int32" Nullable="false" />
+          <Property Name="Id_Client" Type="Int32" />
+          <Property Name="Id_Номера" Type="Int32" />
+          <Property Name="Дата_заезда" Type="DateTime" Precision="0" />
+          <Property Name="Дата_выезда" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Client" Relationship="Self.FK_Бронирование_Client" FromRole="Bronirovanie" ToRole="Client" />
+          <NavigationProperty Name="Numbers" Relationship="Self.FK_Бронирование_Номера" FromRole="Bronirovanie" ToRole="Numbers" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id_Client" />
+          </Key>
+          <Property Name="Id_Client" Type="Int32" Nullable="false" />
+          <Property Name="Фамилия" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Имя" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Отчество" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Серия_номер_паспорта" Type="Int32" />
+          <Property Name="Номер_телефона" Type="Int32" />
+          <NavigationProperty Name="Bronirovanie" Relationship="Self.FK_Бронирование_Client" FromRole="Client" ToRole="Bronirovanie" />
+        </EntityType>
+        <EntityType Name="Numbers">
+          <Key>
+            <PropertyRef Name="Id_Номера" />
+          </Key>
+          <Property Name="Id_Номера" Type="Int32" Nullable="false" />
+          <Property Name="Этаж" Type="Int32" />
+          <Property Name="Стоимость_проживания" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Bronirovanie" Relationship="Self.FK_Бронирование_Номера" FromRole="Numbers" ToRole="Bronirovanie" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Бронирование_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="Bronirovanie" Type="Self.Bronirovanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id_Client" />
+            </Principal>
+            <Dependent Role="Bronirovanie">
+              <PropertyRef Name="Id_Client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Бронирование_Номера">
+          <End Role="Numbers" Type="Self.Numbers" Multiplicity="0..1" />
+          <End Role="Bronirovanie" Type="Self.Bronirovanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Numbers">
+              <PropertyRef Name="Id_Номера" />
+            </Principal>
+            <Dependent Role="Bronirovanie">
+              <PropertyRef Name="Id_Номера" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HotelEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bronirovanie" EntityType="Self.Bronirovanie" />
+          <EntitySet Name="Client" EntityType="Self.Client" />
+          <EntitySet Name="Numbers" EntityType="Self.Numbers" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_Бронирование_Client" Association="Self.FK_Бронирование_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Bronirovanie" EntitySet="Bronirovanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Бронирование_Номера" Association="Self.FK_Бронирование_Номера">
+            <End Role="Numbers" EntitySet="Numbers" />
+            <End Role="Bronirovanie" EntitySet="Bronirovanie" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище HotelModelContainer" CdmEntityContainer="HotelEntities">
+          <EntitySetMapping Name="Bronirovanie">
+            <EntityTypeMapping TypeName="HotelModel.Bronirovanie">
+              <MappingFragment StoreEntitySet="Bronirovanie">
+                <ScalarProperty Name="Id_Бронь" ColumnName="Id-Бронь" />
+                <ScalarProperty Name="Id_Client" ColumnName="Id-Client" />
+                <ScalarProperty Name="Id_Номера" ColumnName="Id-Номера" />
+                <ScalarProperty Name="Дата_заезда" ColumnName="Дата заезда" />
+                <ScalarProperty Name="Дата_выезда" ColumnName="Дата выезда" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Client">
+            <EntityTypeMapping TypeName="HotelModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="Id_Client" ColumnName="Id-Client" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Отчество" ColumnName="Отчество" />
+                <ScalarProperty Name="Серия_номер_паспорта" ColumnName="Серия номер паспорта" />
+                <ScalarProperty Name="Номер_телефона" ColumnName="Номер телефона" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Numbers">
+            <EntityTypeMapping TypeName="HotelModel.Numbers">
+              <MappingFragment StoreEntitySet="Numbers">
+                <ScalarProperty Name="Id_Номера" ColumnName="Id-Номера" />
+                <ScalarProperty Name="Этаж" ColumnName="Этаж" />
+                <ScalarProperty Name="Стоимость_проживания" ColumnName="Стоимость проживания" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="HotelModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
